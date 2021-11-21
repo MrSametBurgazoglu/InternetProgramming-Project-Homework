@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="kategoriler">Kategoriler</string>
+    <string name="stoklar">Stoklar</string>
+    <string name="sut_ve_sut_urunleri">Süt ve Süt Ürünleri</string>
+    <string name="temizlik_urunleri">temizlik ürünleri</string>
+    <string name="ekmek_ve_pasta">ekmek ve pasta</string>
+    <string name="et_urunleri">et ürünleri</string>
+    <string name="icecekler">içecekler</string>
+    <string name="atistirmalik">atıştırmalık</string>
+    <string name="product_name">Ürün Adı</string>
+    <string name="product_price">%s TL</string>
+    <string name="product_count">0</string>
+    <string name="product_code">0000000000</string>
+    <string name="azalt">azalt</string>
+    <string name="arttir">arttır</string>
+    <string name="product_image">product_image</string>
+    <string name="satin_al">Satın al</string>
+    <string name="sepetim">Sepetim</string>
+    <string name="odemeyap">Ödeme Yap</string>
+    <string name="product_code_string">Ürün Kodu: %s</string>
+    <string name="product_name_string">Ürün Adı: %s</string>
+    <string name="product_price_string">Ürün Fiyatı: %s</string>
+    <string name="total_price_string">Toplam Tutar: %s</string>
+    <string name="zero">0</string>
+
+</resources>
