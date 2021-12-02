@@ -2,6 +2,7 @@ package com.example.myapplication
 
 import android.content.Context
 import android.content.Intent
+import android.content.res.Resources
 import android.provider.AlarmClock
 import android.view.LayoutInflater
 import android.view.View
@@ -27,9 +28,10 @@ class SepetContentAdapter(private val courseModelArrayList: MutableList<ProductM
         // to set data to textview and imageview of each card layout
         val model = courseModelArrayList[position]
         holder.productName.text = model.product_name
-        holder.productPrice.text = model.product_price.toString()
-        holder.productImage.setImageResource(model.product_image)
-        holder.productCount.text = model.product_count.toString()
+        //val pricetext = Resources.getSystem().getString(R.string.product_price_string, model.product_price.toString())
+        holder.productPrice.text = context.getString(R.string.product_price_string, model.product_price.toString())
+        holder.productImage.setImageResource(Stok.product_images[model.product_image!!])
+        holder.productCount.text = context.getString(R.string.product_count_string, model.product_count.toString())
     }
 
     override fun getItemCount(): Int {

@@ -25,8 +25,8 @@ class StokContentAdapter(private val courseModelArrayList: MutableList<ProductMo
         val model = courseModelArrayList[position]
         holder.productName.text = model.product_name
         holder.productPrice.text = model.product_price.toString()
-        holder.productImage.setImageResource(model.product_image)
-        holder.productCode.text = model.product_code
+        holder.productImage.setImageResource(Stok.product_images[model.product_image!!])
+        holder.productCode.text = model.product_code.toString()
         holder.cardview.setOnClickListener{
             val intent = Intent(context, BuyScreen::class.java).apply {
                 putExtra("product_name", model.product_name)

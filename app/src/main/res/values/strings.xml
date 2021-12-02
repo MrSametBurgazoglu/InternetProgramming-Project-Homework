@@ -3,11 +3,11 @@
     <string name="kategoriler">Kategoriler</string>
     <string name="stoklar">Stoklar</string>
     <string name="sut_ve_sut_urunleri">Süt ve Süt Ürünleri</string>
-    <string name="temizlik_urunleri">temizlik ürünleri</string>
-    <string name="ekmek_ve_pasta">ekmek ve pasta</string>
-    <string name="et_urunleri">et ürünleri</string>
+    <string name="temizlik_urunleri">Temizlik ve Bakım</string>
+    <string name="ekmek_ve_pasta">Ekmek ve Pasta</string>
+    <string name="et_urunleri">Et ve Et Ürünleri</string>
     <string name="icecekler">içecekler</string>
-    <string name="atistirmalik">atıştırmalık</string>
+    <string name="atistirmalik">Atıştırmalık</string>
     <string name="product_name">Ürün Adı</string>
     <string name="product_price">%s TL</string>
     <string name="product_count">0</string>
@@ -20,8 +20,18 @@
     <string name="odemeyap">Ödeme Yap</string>
     <string name="product_code_string">Ürün Kodu: %s</string>
     <string name="product_name_string">Ürün Adı: %s</string>
-    <string name="product_price_string">Ürün Fiyatı: %s</string>
+    <string name="product_price_string">Fiyat: %s TL</string>
+    <string name="product_count_string">Adet: %s Adet</string>
     <string name="total_price_string">Toplam Tutar: %s</string>
     <string name="zero">0</string>
+    <string name="home_button">Ev Butonu</string>
+    <string name="save_button">Kaydet</string>
+    <string name="product_code_text">Ürün Kodu</string>
+    <string name="fiyat">Fiyat</string>
+    <string name="adet">Adet</string>
+    <string name="resim">Resim</string>
+    <string name="yes">Evet</string>
+    <string name="no">No</string>
+    <string name="authority_check">Ancak yetkili kişiyseniz değişiklik yapabilirsiniz, yetkili kişimisiniz?</string>
 
 </resources>

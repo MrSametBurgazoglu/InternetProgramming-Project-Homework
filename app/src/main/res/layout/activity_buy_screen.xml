@@ -6,6 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".BuyScreen">
 
+    <ImageButton
+        android:id="@+id/homeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/home_button"
+        app:layout_constraintBottom_toTopOf="@+id/productImage"
+        app:layout_constraintEnd_toStartOf="@+id/productImage"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/home" />
+
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
@@ -20,31 +31,28 @@
         android:id="@+id/increaseButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="24dp"
-        android:contentDescription="@string/azalt"
+        android:layout_marginEnd="16dp"
+        android:contentDescription="@string/arttir"
+        app:layout_constraintBottom_toBottomOf="@+id/decreaseButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/stokButton"
-        app:srcCompat="@mipmap/ic_launcher" />
+        app:srcCompat="@drawable/plus" />
 
     <ImageButton
         android:id="@+id/decreaseButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="72dp"
-        android:contentDescription="@string/arttir"
+        android:contentDescription="@string/azalt"
+        app:layout_constraintBottom_toBottomOf="@+id/productImage"
         app:layout_constraintEnd_toStartOf="@+id/increaseButton"
-        app:layout_constraintHorizontal_bias="0.783"
         app:layout_constraintStart_toEndOf="@+id/productImage"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/ic_launcher" />
+        app:srcCompat="@drawable/minus" />
 
     <ImageView
         android:id="@+id/productImage"
         android:layout_width="109dp"
         android:layout_height="113dp"
-        android:layout_marginStart="64dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginStart="96dp"
+        android:layout_marginTop="96dp"
         android:contentDescription="@string/product_image"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

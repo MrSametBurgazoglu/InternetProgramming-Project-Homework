@@ -6,10 +6,21 @@
     android:layout_height="match_parent"
     tools:context=".ChooseScreen">
 
+    <ImageButton
+        android:id="@+id/homeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/home_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/home" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
-        android:layout_width="343dp"
-        android:layout_height="586dp"
+        android:layout_width="match_parent"
+        android:layout_height="537dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

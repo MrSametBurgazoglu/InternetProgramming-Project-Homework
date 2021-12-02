@@ -15,11 +15,22 @@ class SepetActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.recyclerView.adapter = SepetContentAdapter(Sepet.liste, context = this)
-        binding.totalPrice.text = Sepet.total_price.toString()
+        binding.totalPrice.text = getString(R.string.total_price_string, Sepet.total_price.toString())
 
         binding.stokButton.setOnClickListener {
             val intent = Intent(this, StokActivity::class.java)
             startActivity(intent)
         }
+
+        binding.homeButton.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.PayButton.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
+
     }
 }

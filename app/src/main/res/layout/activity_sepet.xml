@@ -6,6 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".ChooseScreen">
 
+
+    <ImageButton
+        android:id="@+id/homeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/home_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/home" />
+
     <TextView
         android:id="@+id/SepetTitle"
         android:layout_width="wrap_content"

@@ -29,7 +29,7 @@ class ContentAdapter(private val courseModelArrayList: MutableList<ProductModel>
         holder.productName.text = model.product_name
         val price = "%s TL".format(model.product_price.toString())
         holder.productPrice.text = price
-        holder.productImage.setImageResource(model.product_image)
+        holder.productImage.setImageResource(Stok.product_images[model.product_image!!])
         holder.cardview.setOnClickListener{
             val intent = Intent(context, BuyScreen::class.java).apply {
                 putExtra("product_name", model.product_name)

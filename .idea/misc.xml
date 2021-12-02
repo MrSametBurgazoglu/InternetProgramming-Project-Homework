@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="app/src/main/res/layout/activity_bactivity.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_buy_screen.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_choose_screen.xml" value="0.2" />
+        <entry key="app/src/main/res/layout/activity_deneme.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_sepet.xml" value="0.1160081053698075" />
+        <entry key="app/src/main/res/layout/activity_stok.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/card_layout.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/card_sepet_layout.xml" value="0.67" />
+        <entry key="app/src/main/res/layout/card_stok_layout.xml" value="0.22" />
+      </map>
+    </option>
+  </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />

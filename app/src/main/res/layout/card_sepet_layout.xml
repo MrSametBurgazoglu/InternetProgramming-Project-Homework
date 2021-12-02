@@ -25,8 +25,8 @@
 
         <ImageView
             android:id="@+id/ProductImage"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
             android:contentDescription="@string/app_name"
             android:padding="5dp"
             android:src="@drawable/ic_launcher_foreground"
@@ -38,12 +38,13 @@
             android:id="@+id/ProductName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="21dp"
             android:text="@string/product_name"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/ProductCount"
+            app:layout_constraintBottom_toBottomOf="@+id/ProductImage"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/ProductImage"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -56,22 +57,22 @@
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/ProductCount"
-            app:layout_constraintStart_toEndOf="@+id/ProductImage"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ProductCount"
             app:layout_constraintTop_toBottomOf="@+id/ProductName" />
 
         <TextView
             android:id="@+id/ProductCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="64dp"
+            android:layout_marginStart="8dp"
             android:text="@string/product_count"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toEndOf="@+id/ProductImage"
+            app:layout_constraintTop_toBottomOf="@+id/ProductName" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
