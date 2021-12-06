@@ -7,10 +7,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.MyApplication">
-        <activity
-            android:name=".deneme"
-            android:exported="true" />
+        android:theme="@style/Theme.MyApplication"
+        android:allowBackup="true"
+        android:fullBackupOnly="true">
         <activity
             android:name=".StokActivity"
             android:exported="true"
