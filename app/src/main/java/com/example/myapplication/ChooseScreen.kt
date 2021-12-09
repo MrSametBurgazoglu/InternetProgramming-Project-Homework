@@ -24,6 +24,7 @@ class ChooseScreen : AppCompatActivity() {
         setContentView(binding.root)
         val category = intent.getStringExtra("category")
         model_list.clear()
+        binding.categoryTextView.text = category
 
         binding.recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         if (category != null){
