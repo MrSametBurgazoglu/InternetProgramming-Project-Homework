@@ -63,4 +63,17 @@ class ChooseScreen : AppCompatActivity() {
                 Log.w("Info", "Error getting documents.", exception)
             }
     }
+
+    /*
+    private fun getImages(){
+        for (model in model_list){
+            File file = new File(filePath);
+            if(file.exists())
+//Do something
+            else
+// Do something else.
+        }
+
+    }
+     */
 }

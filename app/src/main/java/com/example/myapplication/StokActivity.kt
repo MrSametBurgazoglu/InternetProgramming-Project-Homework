@@ -40,7 +40,8 @@ class StokActivity : AppCompatActivity() {
             startActivity(intent)
         }
         binding.saveButton.setOnClickListener {
-            show_authority_Dialog()
+            //show_authority_Dialog()
+            save_stok()
         }
 
         binding.AddProductButton.setOnClickListener {
@@ -115,22 +116,6 @@ class StokActivity : AppCompatActivity() {
                     Toast.makeText(this, "Failed", Toast.LENGTH_LONG).show()
                 }
         }
-    }
-
-    private fun show_authority_Dialog() {
-        val dialog = Dialog(this)
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        //dialog.setCancelable(false)
-        dialog.setContentView(R.layout.authority_dialog_layout)
-        val yesBtn = dialog.findViewById(R.id.yes_button) as Button
-        val noBtn = dialog.findViewById(R.id.no_button) as Button
-        yesBtn.setOnClickListener {
-            dialog.dismiss()
-            save_stok()
-        }
-        noBtn.setOnClickListener { dialog.dismiss() }
-        dialog.show()
-
     }
 
     private fun show_add_Dialog() {
