@@ -11,14 +11,12 @@
     <string name="product_name">Ürün Adı</string>
     <string name="product_price">%s TL</string>
     <string name="product_count">0</string>
-    <string name="product_code">0000000000</string>
     <string name="azalt">azalt</string>
     <string name="arttir">arttır</string>
     <string name="product_image">product_image</string>
     <string name="satin_al">Satın al</string>
     <string name="sepetim">Sepetim</string>
     <string name="odemeyap">Ödeme Yap</string>
-    <string name="product_code_string">Ürün Kodu: %s</string>
     <string name="product_name_string">Ürün Adı: %s</string>
     <string name="product_price_string">Fiyat: %s TL</string>
     <string name="product_count_string">Adet: %s Adet</string>
@@ -26,12 +24,30 @@
     <string name="zero">0</string>
     <string name="home_button">Ev Butonu</string>
     <string name="save_button">Kaydet</string>
-    <string name="product_code_text">Ürün Kodu</string>
     <string name="fiyat">Fiyat</string>
     <string name="adet">Adet</string>
     <string name="resim">Resim</string>
     <string name="yes">Evet</string>
-    <string name="no">No</string>
-    <string name="authority_check">Ancak yetkili kişiyseniz değişiklik yapabilirsiniz, yetkili kişimisiniz?</string>
+    <string name="no">Hayır</string>
+    <string name="authority_check">Ancak yetkili kişiyseniz değişiklik yapabilirsiniz \n yetkili kişimisiniz?</string>
+    <string name="add_product">Ürün Ekle</string>
+    <string name="product_name_text">Ürün Adı:</string>
+    <string name="product_category_text">Ürün Kategori:</string>
+    <string name="product_price_text">Ürün Fiyatı:</string>
+    <string name="product_count_text">Ürün Adedi:</string>
+    <string name="product_image_text">Ürün Resmi:</string>
+    <string name="product_name_edittext">Ürün Adı:</string>
+    <string name="product_category_edittext">Ürünün Kategorisi</string>
+    <string name="product_price_edittext">Ürünün Fiyatı</string>
+    <string name="product_count_edittext">Ürünün Adedi</string>
+    <string name="urun_ekle">Ürün Ekle</string>
+    <string-array name="categories_array">
+        <item>Atıştırmalık</item>
+        <item>Ekmek ve Pasta</item>
+        <item>Et ve Et Ürünleri</item>
+        <item>Süt ve Süt Ürünleri</item>
+        <item>Temizlik ve Bakım</item>
+        <item>İçecekler</item>
+    </string-array>
 
 </resources>

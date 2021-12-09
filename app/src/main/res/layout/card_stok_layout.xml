@@ -16,7 +16,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <!--Text View to display Course Name-->
 
@@ -38,52 +38,43 @@
             android:id="@+id/ProductName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:text="@string/product_name"
             android:textColor="@color/black"
-            android:textSize="18sp"
+            android:textSize="11sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/ProductImage"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
+        <EditText
             android:id="@+id/ProductPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="4dp"
-            android:drawablePadding="2dp"
-            android:text="@string/product_price"
+            android:layout_marginEnd="4dp"
+            android:ems="2"
+            android:hint="@string/product_price"
+            android:inputType="numberDecimal"
+            android:minWidth="48dp"
+            android:minHeight="48dp"
+            android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/ProductImage"
-            app:layout_constraintTop_toBottomOf="@+id/ProductName" />
+            app:layout_constraintEnd_toStartOf="@+id/ProductCount"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
+        <EditText
             android:id="@+id/ProductCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/product_count"
+            android:layout_marginEnd="4dp"
+            android:ems="2"
+            android:hint="@string/product_count"
+            android:inputType="numberDecimal"
+            android:minWidth="48dp"
+            android:minHeight="48dp"
             android:textColor="@color/black"
-            android:textSize="18sp"
-            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/ProductPrice"
-            app:layout_constraintTop_toBottomOf="@+id/ProductCode" />
-
-        <TextView
-            android:id="@+id/ProductCode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:text="@string/product_code"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/ProductName"
             app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

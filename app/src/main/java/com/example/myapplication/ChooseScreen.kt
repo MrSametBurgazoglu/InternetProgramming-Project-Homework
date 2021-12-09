@@ -4,12 +4,10 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.AlarmClock.EXTRA_MESSAGE
 import android.util.Log
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.databinding.ActivityChooseScreenBinding
-import com.example.myapplication.ContentAdapter
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
@@ -56,6 +54,7 @@ class ChooseScreen : AppCompatActivity() {
                 for (document in result) {
                     Log.d("Info", "${document.id} => ${document.data}")
                     val model = document.toObject<ProductModel>()
+                    model.document_id = document.id
                     model_list.add(model)
                 }
                 binding.recyclerView.adapter?.notifyDataSetChanged()
@@ -63,14 +62,5 @@ class ChooseScreen : AppCompatActivity() {
             .addOnFailureListener { exception ->
                 Log.w("Info", "Error getting documents.", exception)
             }
-
-
-        val models = mutableListOf(
-            ProductModel(R.drawable.ic_launcher_foreground, "Süt", "Süt ve Süt Ürünleri", 3, 1, 0),
-            ProductModel(R.drawable.ic_launcher_foreground, "Ayran","Süt ve Süt Ürünleri", 3, 2, 0),
-            ProductModel(R.drawable.ic_launcher_foreground, "Yoğurt", "Süt ve Süt Ürünleri",3, 3, 0),
-            ProductModel(R.drawable.ic_launcher_foreground, "Peynir", "Süt ve Süt Ürünleri",3, 4, 0),
-            ProductModel(R.drawable.ic_launcher_foreground, "Kaşar", "Süt ve Süt Ürünleri",3, 5, 0)
-        )
     }
 }

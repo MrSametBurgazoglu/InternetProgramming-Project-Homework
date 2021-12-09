@@ -35,7 +35,9 @@ class ContentAdapter(private val courseModelArrayList: MutableList<ProductModel>
                 putExtra("product_name", model.product_name)
                 putExtra("product_price", model.product_price.toString())
                 putExtra("product_image", model.product_image)
-                putExtra("product_code", model.product_code)
+                putExtra("product_count", model.product_count)
+                putExtra("document_id", model.document_id)
+                putExtra("product_category", model.product_category)
             }
             context.startActivity(intent)
         }

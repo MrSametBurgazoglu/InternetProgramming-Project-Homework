@@ -18,19 +18,24 @@ class BuyScreen : AppCompatActivity() {
         val productName:String = intent.getStringExtra("product_name").toString()
         val productCategory:String = intent.getStringExtra("product_category").toString()
         val productPrice:String = intent.getStringExtra("product_price").toString()
-        val productCode:Long = intent.getLongExtra("product_code", 0)
+        val productCount:Int = intent.getIntExtra("product_count", 0)
+        val productDocumentID:String = intent.getStringExtra("document_id").toString()
         binding.productImage.setImageResource(Stok.product_images[productImage])
-        binding.textView3.text = getString(R.string.product_code_string, productCode.toString())
         binding.textView4.text = getString(R.string.product_name_string, productName)
         binding.textView5.text = getString(R.string.product_price_string, productPrice)
 
         binding.buyButton.setOnClickListener {
-            val intent = Intent(this, SepetActivity::class.java)
-            Sepet.clear_list()
             val count = binding.textView2.text.toString().toInt()
-            val productModel = ProductModel(productImage, productName, productCategory, productPrice.toInt(), productCode, count)
-            Sepet.add_to_list(productModel)
-            startActivity(intent)
+            if( count > productCount){
+                Toast.makeText(this, "Üzgünüz, istediğiniz üründen kalmadı..",Toast.LENGTH_LONG).show()
+            }
+            else{
+                val intent = Intent(this, SepetActivity::class.java)
+                Sepet.clear_list()
+                val productModel = ProductModel(productDocumentID, productImage, productName, productCategory, productPrice.toInt(), count)
+                Sepet.add_to_list(productModel)
+                startActivity(intent)
+            }
         }
 
         binding.increaseButton.setOnClickListener{

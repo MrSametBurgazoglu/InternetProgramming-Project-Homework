@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity() {
         }
         binding.meatButton.setOnClickListener {
             val intent = Intent(this, ChooseScreen::class.java).apply {
-                putExtra("category", "Et ve Et ürünleri")
+                putExtra("category", "Et ve Et Ürünleri")
             }
             startActivity(intent)
         }
