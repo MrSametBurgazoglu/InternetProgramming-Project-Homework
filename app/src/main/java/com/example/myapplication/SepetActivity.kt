@@ -36,8 +36,6 @@ class SepetActivity : AppCompatActivity() {
             val db = Firebase.firestore
             val product_category = Sepet.liste[0].product_category
             val product_document_id = Sepet.liste[0].document_id
-            Toast.makeText(this, product_category, Toast.LENGTH_LONG).show()
-            Toast.makeText(this, product_document_id, Toast.LENGTH_LONG).show()
             val document = db.collection("Products").document(product_category!!).collection("Ürünler").document(
                 product_document_id!!)
 

@@ -34,7 +34,6 @@ class ContentAdapter(private val courseModelArrayList: MutableList<ProductModel>
         val price = "%s TL".format(model.product_price.toString())
         holder.productPrice.text = price
         val file = File(context.filesDir.absolutePath ,model.product_image.toString())
-        Toast.makeText(context, file.exists().toString(), Toast.LENGTH_SHORT).show()
         if (file.exists()){
             val bmImg = BitmapFactory.decodeFile(file.absolutePath)
             holder.productImage.setImageBitmap(bmImg)

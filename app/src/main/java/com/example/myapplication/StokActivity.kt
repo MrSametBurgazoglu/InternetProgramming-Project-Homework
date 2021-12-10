@@ -76,13 +76,10 @@ class StokActivity : AppCompatActivity() {
             val productPriceEdittext = view?.itemView?.findViewById<EditText>(R.id.ProductPrice)
             if (productCountEdittext != null && productPriceEdittext != null) {
                 if (productCountEdittext.text.toString().toInt() != stok_list[child_count].product_count || productPriceEdittext.text.toString().toInt() != stok_list[child_count].product_price){
-                    Toast.makeText(this, "heyyo", Toast.LENGTH_SHORT).show()
                     val document = db.collection("Products").document(stok_list[child_count].product_category!!).collection("Ürünler").document(
                         stok_list[child_count].document_id!!)
                     document.update("product_price", productPriceEdittext.text.toString().toInt())
                     document.update("product_count", productCountEdittext.text.toString().toInt())
-                    Toast.makeText(this, productPriceEdittext.text.toString() + "==" + stok_list[child_count].product_price.toString(), Toast.LENGTH_SHORT).show()
-                    Toast.makeText(this, productCountEdittext.text.toString() + "==" + stok_list[child_count].product_count.toString(), Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -95,7 +92,6 @@ class StokActivity : AppCompatActivity() {
         db.collection("Products")
             .get()
             .addOnSuccessListener { documents ->
-                Toast.makeText(this, "Success on getting categories", Toast.LENGTH_LONG).show()
                 for (document in documents) {
                     categories.add(document.id)
                 }
