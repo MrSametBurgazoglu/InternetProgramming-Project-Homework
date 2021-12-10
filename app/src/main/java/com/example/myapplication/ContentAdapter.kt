@@ -12,6 +12,10 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import androidx.annotation.NonNull
 import androidx.cardview.widget.CardView
+import android.graphics.BitmapFactory
+
+import android.graphics.Bitmap
+import java.io.File
 
 
 class ContentAdapter(private val courseModelArrayList: MutableList<ProductModel>, private val context: Context) :
@@ -29,7 +33,12 @@ class ContentAdapter(private val courseModelArrayList: MutableList<ProductModel>
         holder.productName.text = model.product_name
         val price = "%s TL".format(model.product_price.toString())
         holder.productPrice.text = price
-        holder.productImage.setImageResource(Stok.product_images[model.product_image!!])
+        val file = File(context.filesDir.absolutePath ,model.product_image.toString())
+        Toast.makeText(context, file.exists().toString(), Toast.LENGTH_SHORT).show()
+        if (file.exists()){
+            val bmImg = BitmapFactory.decodeFile(file.absolutePath)
+            holder.productImage.setImageBitmap(bmImg)
+        }
         holder.cardview.setOnClickListener{
             val intent = Intent(context, BuyScreen::class.java).apply {
                 putExtra("product_name", model.product_name)

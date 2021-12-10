@@ -30,7 +30,7 @@ class SepetContentAdapter(private val courseModelArrayList: MutableList<ProductM
         holder.productName.text = model.product_name
         //val pricetext = Resources.getSystem().getString(R.string.product_price_string, model.product_price.toString())
         holder.productPrice.text = context.getString(R.string.product_price_string, model.product_price.toString())
-        holder.productImage.setImageResource(Stok.product_images[model.product_image!!])
+        //holder.productImage.setImageResource(Stok.product_images[model.product_image!!])
         holder.productCount.text = context.getString(R.string.product_count_string, model.product_count.toString())
     }
 

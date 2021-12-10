@@ -2,14 +2,17 @@ package com.example.myapplication
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import androidx.cardview.widget.CardView
+import java.io.File
 
 
 class StokContentAdapter(private val courseModelArrayList: MutableList<ProductModel>, private val context: Context) :
@@ -27,7 +30,12 @@ class StokContentAdapter(private val courseModelArrayList: MutableList<ProductMo
         holder.productName.text = model.product_name
         holder.productPrice.setText(model.product_price.toString())
         holder.productCount.setText(model.product_count.toString())
-        holder.productImage.setImageResource(Stok.product_images[model.product_image!!])
+        val file = File(context.filesDir.absolutePath ,model.product_image.toString())
+        Toast.makeText(context, file.exists().toString(), Toast.LENGTH_SHORT).show()
+        if (file.exists()){
+            val bmImg = BitmapFactory.decodeFile(file.absolutePath)
+            holder.productImage.setImageBitmap(bmImg)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -44,8 +52,6 @@ class StokContentAdapter(private val courseModelArrayList: MutableList<ProductMo
         val productPrice: EditText = itemView.findViewById(R.id.ProductPrice)
         val productCount: EditText = itemView.findViewById(R.id.ProductCount)
         val cardview: CardView = itemView.findViewById(R.id.CardView)
-        var category:String = ""
-        var document_id:String = ""
     }
 
 }

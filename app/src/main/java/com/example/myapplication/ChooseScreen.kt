@@ -1,20 +1,27 @@
 package com.example.myapplication
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.databinding.ActivityChooseScreenBinding
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
+import java.io.File
 
 
 private lateinit var binding: ActivityChooseScreenBinding
 private var model_list = mutableListOf<ProductModel>()
+private var image_to_download = 0
 
 class ChooseScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,23 +65,43 @@ class ChooseScreen : AppCompatActivity() {
                     model.document_id = document.id
                     model_list.add(model)
                 }
-                binding.recyclerView.adapter?.notifyDataSetChanged()
+                getImages()
             }
             .addOnFailureListener { exception ->
                 Log.w("Info", "Error getting documents.", exception)
             }
     }
 
-    /*
+    @SuppressLint("NotifyDataSetChanged")
     private fun getImages(){
+
+        val storage = Firebase.storage
+        val storage_ref = storage.reference
+        image_to_download = model_list.size
+
         for (model in model_list){
-            File file = new File(filePath);
-            if(file.exists())
-//Do something
-            else
-// Do something else.
+            val file = File(filesDir.absolutePath, model.product_image.toString())
+            if (!file.exists()){
+                val path_reference = storage_ref.child(model.product_category.toString() + "/" + model.product_image.toString())
+                val b = file.createNewFile()
+                if(b){
+                    path_reference.getFile(file).addOnSuccessListener {
+                        image_to_download -= 1
+                        if (image_to_download == 0){
+                            binding.recyclerView.adapter?.notifyDataSetChanged()
+                        }
+                    }.addOnFailureListener {
+                        Toast.makeText(this, it.toString(), Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
+            else{
+                image_to_download -= 1
+            }
+            if (image_to_download == 0){
+                binding.recyclerView.adapter?.notifyDataSetChanged()
+            }
         }
 
     }
-     */
 }

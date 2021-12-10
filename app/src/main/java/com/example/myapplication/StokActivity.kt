@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -14,17 +15,23 @@ import android.view.View
 import android.view.Window
 import android.widget.*
 import androidx.core.content.FileProvider
+import androidx.core.graphics.drawable.toBitmap
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.databinding.ActivityStokBinding
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
+import java.io.ByteArrayOutputStream
 import java.io.File
+import java.util.*
+import kotlin.collections.ArrayList
 
 private lateinit var binding: ActivityStokBinding
 private var stok_list = mutableListOf<ProductModel>()
 private lateinit var dialog: Dialog
 private lateinit var photo_file: File
+private var image_to_download = 0
 
 class StokActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,8 +59,10 @@ class StokActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if(requestCode == 13 && resultCode == Activity.RESULT_OK){
             val takenPhoto = BitmapFactory.decodeFile(photo_file.absolutePath)
+            //val b = BitmapFactory.decodeByteArray(takenPhoto, 0, takenPhoto.length)
+            val resized_image = Bitmap.createScaledBitmap(takenPhoto, 128, 128, false)
             val product_image_button = dialog.findViewById(R.id.ProductImageButton) as ImageButton
-            product_image_button.setImageBitmap(takenPhoto)
+            product_image_button.setImageBitmap(resized_image)
         }else {
             super.onActivityResult(requestCode, resultCode, data)
         }
@@ -110,6 +119,7 @@ class StokActivity : AppCompatActivity() {
                         stok_list.add(model)
                     }
                     binding.recyclerView.adapter?.notifyDataSetChanged()
+                    getImages()
                 }
                 .addOnFailureListener { exception ->
                     Log.w("Info", "Error getting documents.", exception)
@@ -147,23 +157,40 @@ class StokActivity : AppCompatActivity() {
             dialog.dismiss()
             val model = ProductModel(
                 product_name_edit_text.text.toString(),
-                0,//product_image_int
+                product_name_edit_text.text.toString() + ".jpg",//product_image
                 product_name_edit_text.text.toString(),
                 product_category_spinner.selectedItem.toString(),
                 product_price_edit_text.text.toString().toInt(),
                 product_count_edit_text.text.toString().toInt(),
             )
-            val db = Firebase.firestore
-            val document = db.collection("Products").document(model.product_category!!).collection("Ürünler").document(
-                model.document_id!!).set(model)
+            add_product_to_database(model)
+            product_image_button.invalidate()
+            val drawable = product_image_button.drawable
+            val bitmap = drawable.toBitmap()
+            val resized_image = Bitmap.createScaledBitmap(bitmap, 64, 64, false)
+            val baos = ByteArrayOutputStream()
+            resized_image.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+            val data = baos.toByteArray()
+            val storageRef = Firebase.storage.reference
+            val fileRef = storageRef.child(model.product_category.toString()+"/"+model.product_image.toString())
+            var uploadTask = fileRef.putBytes(data)
+            uploadTask.addOnFailureListener {
+                // Handle unsuccessful uploads
+            }.addOnSuccessListener { taskSnapshot ->
+                // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
+                // ...
+            }
             //save_stok()
         }
         no_button.setOnClickListener { dialog.dismiss() }
         product_image_button.setOnClickListener {
             val takePhotoIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             photo_file = getPhotoFile("photo.jpg")
-            val providerFile = FileProvider.getUriForFile(this,"com.example.androidcamera.fileprovider", photo_file)
+            val providerFile = FileProvider.getUriForFile(
+                Objects.requireNonNull(this),
+                BuildConfig.APPLICATION_ID + ".fileprovider", photo_file);
             takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, providerFile)
+            startActivityForResult(takePhotoIntent, 13)
         }
         dialog.show()
 
@@ -174,7 +201,43 @@ class StokActivity : AppCompatActivity() {
         return File.createTempFile(fileName, ".jpg", directoryStorage)
     }
 
-    private fun add_product_to_database(product:ProductModel){
+    private fun add_product_to_database(model:ProductModel){
+        val db = Firebase.firestore
+        db.collection("Products").document(model.product_category!!).collection("Ürünler").document(
+            model.document_id!!).set(model)
+
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun getImages(){
+
+        val storage = Firebase.storage
+        val storage_ref = storage.reference
+        image_to_download = stok_list.size
+
+        for (model in stok_list){
+            val file = File(filesDir.absolutePath, model.product_image.toString())
+            if (!file.exists()){
+                val path_reference = storage_ref.child(model.product_category.toString() + "/" + model.product_image.toString())
+                val b = file.createNewFile()
+                if(b){
+                    path_reference.getFile(file).addOnSuccessListener {
+                        image_to_download -= 1
+                        if (image_to_download == 0){
+                            binding.recyclerView.adapter?.notifyDataSetChanged()
+                        }
+                    }.addOnFailureListener {
+                        Toast.makeText(this, it.toString(), Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
+            else{
+                image_to_download -= 1
+            }
+            if (image_to_download == 0){
+                binding.recyclerView.adapter?.notifyDataSetChanged()
+            }
+        }
 
     }
 }
