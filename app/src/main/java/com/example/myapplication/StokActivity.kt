@@ -163,7 +163,7 @@ class StokActivity : AppCompatActivity() {
                 product_price_edit_text.text.toString().toInt(),
                 product_count_edit_text.text.toString().toInt(),
             )
-            add_product_to_database(model)
+            addProductToDatabase(model)
             product_image_button.invalidate()
             val drawable = product_image_button.drawable
             val bitmap = drawable.toBitmap()
@@ -173,14 +173,10 @@ class StokActivity : AppCompatActivity() {
             val data = baos.toByteArray()
             val storageRef = Firebase.storage.reference
             val fileRef = storageRef.child(model.product_category.toString()+"/"+model.product_image.toString())
-            var uploadTask = fileRef.putBytes(data)
+            val uploadTask = fileRef.putBytes(data)
             uploadTask.addOnFailureListener {
-                // Handle unsuccessful uploads
-            }.addOnSuccessListener { taskSnapshot ->
-                // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
-                // ...
+                Toast.makeText(this, "Ürün resmini veritabanına göndermede sorun yaşandı", Toast.LENGTH_SHORT).show()
             }
-            //save_stok()
         }
         no_button.setOnClickListener { dialog.dismiss() }
         product_image_button.setOnClickListener {
@@ -201,7 +197,7 @@ class StokActivity : AppCompatActivity() {
         return File.createTempFile(fileName, ".jpg", directoryStorage)
     }
 
-    private fun add_product_to_database(model:ProductModel){
+    private fun addProductToDatabase(model:ProductModel){
         val db = Firebase.firestore
         db.collection("Products").document(model.product_category!!).collection("Ürünler").document(
             model.document_id!!).set(model)
@@ -218,10 +214,10 @@ class StokActivity : AppCompatActivity() {
         for (model in stok_list){
             val file = File(filesDir.absolutePath, model.product_image.toString())
             if (!file.exists()){
-                val path_reference = storage_ref.child(model.product_category.toString() + "/" + model.product_image.toString())
+                val pathReference = storage_ref.child(model.product_category.toString() + "/" + model.product_image.toString())
                 val b = file.createNewFile()
                 if(b){
-                    path_reference.getFile(file).addOnSuccessListener {
+                    pathReference.getFile(file).addOnSuccessListener {
                         image_to_download -= 1
                         if (image_to_download == 0){
                             binding.recyclerView.adapter?.notifyDataSetChanged()

@@ -1,5 +1,6 @@
 package com.example.myapplication
 
+import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
@@ -19,22 +20,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        val db = Firebase.firestore
-        /*
-        val data = hashMapOf(
-            "ProductCategory" to "Süt ve Süt Ürünleri",
-            "ProductCount" to "100",
-            "ProductID" to 1000000000,
-            "ProductName" to "Mis Uht Süt Yarım Yağlı 1 Lt",
-            "ProductPrice" to 4.9,
-        )
-        val document = db.collection("Products").document("Süt")
-        document.set(data)
-            .addOnSuccessListener { Log.d("Info", "DocumentSnapshot added successfully") }
-            .addOnFailureListener { e -> Log.w("Info", "Error adding document", e)
-            }
-*/
+        checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, 0)
 
         binding.milkProductsButton.setOnClickListener {
             val intent = Intent(this, ChooseScreen::class.java).apply {

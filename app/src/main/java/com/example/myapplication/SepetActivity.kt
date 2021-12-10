@@ -4,8 +4,6 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.databinding.ActivitySepetBinding
@@ -43,7 +41,6 @@ class SepetActivity : AppCompatActivity() {
             val document = db.collection("Products").document(product_category!!).collection("Ürünler").document(
                 product_document_id!!)
 
-            Toast.makeText(this, "pay button clicked", Toast.LENGTH_SHORT).show()
             document.get()
                 .addOnSuccessListener { result->
                     //stokta bulunduğundan fazla ürün almayı önceden kontrol ettiğimiz içi burda kontrol etmeye gerek yok

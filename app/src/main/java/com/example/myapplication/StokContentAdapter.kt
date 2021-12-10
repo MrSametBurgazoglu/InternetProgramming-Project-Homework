@@ -18,14 +18,12 @@ import java.io.File
 class StokContentAdapter(private val courseModelArrayList: MutableList<ProductModel>, private val context: Context) :
     RecyclerView.Adapter<StokContentAdapter.Viewholder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Viewholder {
-        // to inflate the layout for each item of recycler view.
         val view: View =
             LayoutInflater.from(parent.context).inflate(R.layout.card_stok_layout, parent, false)
         return Viewholder(view)
     }
 
     override fun onBindViewHolder(holder: Viewholder, position: Int) {
-        // to set data to textview and imageview of each card layout
         val model = courseModelArrayList[position]
         holder.productName.text = model.product_name
         holder.productPrice.setText(model.product_price.toString())
@@ -39,19 +37,14 @@ class StokContentAdapter(private val courseModelArrayList: MutableList<ProductMo
     }
 
     override fun getItemCount(): Int {
-        // this method is used for showing number
-        // of card items in recycler view.
         return courseModelArrayList.size
     }
 
-    // View holder class for initializing of
-    // your views such as TextView and Imageview.
     inner class Viewholder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val productImage: ImageView = itemView.findViewById(R.id.ProductImage)
         val productName: TextView = itemView.findViewById(R.id.ProductName)
         val productPrice: EditText = itemView.findViewById(R.id.ProductPrice)
         val productCount: EditText = itemView.findViewById(R.id.ProductCount)
-        val cardview: CardView = itemView.findViewById(R.id.CardView)
     }
 
 }
