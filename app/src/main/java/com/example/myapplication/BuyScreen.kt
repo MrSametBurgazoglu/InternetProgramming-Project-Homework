@@ -3,11 +3,9 @@ package com.example.myapplication
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.AlarmClock
 import android.widget.Toast
 import com.example.myapplication.databinding.ActivityBuyScreenBinding
 import android.graphics.BitmapFactory
-import android.graphics.Bitmap
 import java.io.File
 
 
@@ -39,9 +37,9 @@ class BuyScreen : AppCompatActivity() {
             }
             else{
                 val intent = Intent(this, SepetActivity::class.java)
-                Sepet.clear_list()
+                Sepet.clearList()
                 val productModel = ProductModel(productDocumentID, productImage, productName, productCategory, productPrice.toInt(), count)
-                Sepet.add_to_list(productModel)
+                Sepet.addToList(productModel)
                 startActivity(intent)
             }
         }

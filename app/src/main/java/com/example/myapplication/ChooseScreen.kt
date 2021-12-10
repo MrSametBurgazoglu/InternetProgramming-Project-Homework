@@ -1,15 +1,11 @@
 package com.example.myapplication
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.databinding.ActivityChooseScreenBinding
 import com.google.firebase.firestore.ktx.firestore
@@ -76,16 +72,16 @@ class ChooseScreen : AppCompatActivity() {
     private fun getImages(){
 
         val storage = Firebase.storage
-        val storage_ref = storage.reference
+        val storageRef = storage.reference
         image_to_download = model_list.size
 
         for (model in model_list){
             val file = File(filesDir.absolutePath, model.product_image.toString())
             if (!file.exists()){
-                val path_reference = storage_ref.child(model.product_category.toString() + "/" + model.product_image.toString())
+                val pathReference = storageRef.child(model.product_category.toString() + "/" + model.product_image.toString())
                 val b = file.createNewFile()
                 if(b){
-                    path_reference.getFile(file).addOnSuccessListener {
+                    pathReference.getFile(file).addOnSuccessListener {
                         image_to_download -= 1
                         if (image_to_download == 0){
                             binding.recyclerView.adapter?.notifyDataSetChanged()

@@ -4,12 +4,12 @@ object Sepet {
     val liste = mutableListOf<ProductModel>()
     var total_price = 0
 
-    fun add_to_list(productModel: ProductModel){
+    fun addToList(productModel: ProductModel){
         liste.add(productModel)
         total_price += productModel.product_count?.times(productModel.product_price!!) ?: 0
     }
 
-    fun clear_list(){
+    fun clearList(){
         liste.clear()
         total_price = 0
     }

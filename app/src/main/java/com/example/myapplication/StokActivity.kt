@@ -11,7 +11,6 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
-import android.view.View
 import android.view.Window
 import android.widget.*
 import androidx.core.content.FileProvider
@@ -40,7 +39,7 @@ class StokActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         stok_list.clear()
-        get_categories()
+        getCategories()
         binding.recyclerView.adapter = StokContentAdapter(stok_list, context = this)
         binding.homeButton.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
@@ -48,11 +47,11 @@ class StokActivity : AppCompatActivity() {
         }
         binding.saveButton.setOnClickListener {
             //show_authority_Dialog()
-            save_stok()
+            saveStok()
         }
 
         binding.AddProductButton.setOnClickListener {
-            show_add_Dialog()
+            showAddDialog()
         }
     }
 
@@ -60,15 +59,15 @@ class StokActivity : AppCompatActivity() {
         if(requestCode == 13 && resultCode == Activity.RESULT_OK){
             val takenPhoto = BitmapFactory.decodeFile(photo_file.absolutePath)
             //val b = BitmapFactory.decodeByteArray(takenPhoto, 0, takenPhoto.length)
-            val resized_image = Bitmap.createScaledBitmap(takenPhoto, 128, 128, false)
-            val product_image_button = dialog.findViewById(R.id.ProductImageButton) as ImageButton
-            product_image_button.setImageBitmap(resized_image)
+            val resizedImage = Bitmap.createScaledBitmap(takenPhoto, 128, 128, false)
+            val productImageButton = dialog.findViewById(R.id.ProductImageButton) as ImageButton
+            productImageButton.setImageBitmap(resizedImage)
         }else {
             super.onActivityResult(requestCode, resultCode, data)
         }
     }
 
-    private fun save_stok(){
+    private fun saveStok(){
         val db = Firebase.firestore
         for(child_count in 0..stok_list.size){
             val view = binding.recyclerView.findViewHolderForAdapterPosition(child_count)
@@ -86,7 +85,7 @@ class StokActivity : AppCompatActivity() {
 
     }
 
-    private fun get_categories(){
+    private fun getCategories(){
         val db = Firebase.firestore
         val categories = arrayListOf<String>()
         db.collection("Products")
@@ -95,12 +94,12 @@ class StokActivity : AppCompatActivity() {
                 for (document in documents) {
                     categories.add(document.id)
                 }
-                get_all_products(categories)
+                getAllProducts(categories)
             }
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private fun get_all_products(categories: ArrayList<String>){
+    private fun getAllProducts(categories: ArrayList<String>){
 
         val db = Firebase.firestore
         val collection = db.collection("Products")
@@ -124,19 +123,19 @@ class StokActivity : AppCompatActivity() {
         }
     }
 
-    private fun show_add_Dialog() {
+    private fun showAddDialog() {
         dialog = Dialog(this)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         //dialog.setCancelable(false)
         dialog.setContentView(R.layout.add_product_dialog_layout)
         dialog.findViewById<Spinner>(R.id.spinner)
-        val product_name_edit_text = dialog.findViewById(R.id.ProductNameEditText) as EditText
-        val product_count_edit_text = dialog.findViewById(R.id.ProductCountEditText) as EditText
-        val product_price_edit_text = dialog.findViewById(R.id.ProductPriceEditText) as EditText
-        val product_category_spinner = dialog.findViewById(R.id.spinner) as Spinner
-        val product_image_button = dialog.findViewById(R.id.ProductImageButton) as ImageButton
-        val add_button = dialog.findViewById(R.id.AddButton) as Button
-        val no_button = dialog.findViewById(R.id.no_button) as Button
+        val productNameEditText = dialog.findViewById(R.id.ProductNameEditText) as EditText
+        val productCountEditText = dialog.findViewById(R.id.ProductCountEditText) as EditText
+        val productPriceEditText = dialog.findViewById(R.id.ProductPriceEditText) as EditText
+        val productCategorySpinner = dialog.findViewById(R.id.spinner) as Spinner
+        val productImageButton = dialog.findViewById(R.id.ProductImageButton) as ImageButton
+        val addButton = dialog.findViewById(R.id.AddButton) as Button
+        val noButton = dialog.findViewById(R.id.no_button) as Button
 
         ArrayAdapter.createFromResource(
             this,
@@ -146,26 +145,26 @@ class StokActivity : AppCompatActivity() {
             // Specify the layout to use when the list of choices appears
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             // Apply the adapter to the spinner
-            product_category_spinner.adapter = adapter
+            productCategorySpinner.adapter = adapter
         }
 
-        add_button.setOnClickListener {
+        addButton.setOnClickListener {
             dialog.dismiss()
             val model = ProductModel(
-                product_name_edit_text.text.toString(),
-                product_name_edit_text.text.toString() + ".jpg",//product_image
-                product_name_edit_text.text.toString(),
-                product_category_spinner.selectedItem.toString(),
-                product_price_edit_text.text.toString().toInt(),
-                product_count_edit_text.text.toString().toInt(),
+                productNameEditText.text.toString(),
+                productNameEditText.text.toString() + ".jpg",//product_image
+                productNameEditText.text.toString(),
+                productCategorySpinner.selectedItem.toString(),
+                productPriceEditText.text.toString().toInt(),
+                productCountEditText.text.toString().toInt(),
             )
             addProductToDatabase(model)
-            product_image_button.invalidate()
-            val drawable = product_image_button.drawable
+            productImageButton.invalidate()
+            val drawable = productImageButton.drawable
             val bitmap = drawable.toBitmap()
-            val resized_image = Bitmap.createScaledBitmap(bitmap, 64, 64, false)
+            val resizedImage = Bitmap.createScaledBitmap(bitmap, 64, 64, false)
             val baos = ByteArrayOutputStream()
-            resized_image.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+            resizedImage.compress(Bitmap.CompressFormat.JPEG, 100, baos)
             val data = baos.toByteArray()
             val storageRef = Firebase.storage.reference
             val fileRef = storageRef.child(model.product_category.toString()+"/"+model.product_image.toString())
@@ -174,23 +173,17 @@ class StokActivity : AppCompatActivity() {
                 Toast.makeText(this, "Ürün resmini veritabanına göndermede sorun yaşandı", Toast.LENGTH_SHORT).show()
             }
         }
-        no_button.setOnClickListener { dialog.dismiss() }
-        product_image_button.setOnClickListener {
+        noButton.setOnClickListener { dialog.dismiss() }
+        productImageButton.setOnClickListener {
             val takePhotoIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            photo_file = getPhotoFile("photo.jpg")
-            val providerFile = FileProvider.getUriForFile(
-                Objects.requireNonNull(this),
-                BuildConfig.APPLICATION_ID + ".fileprovider", photo_file);
+            val directoryStorage = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+            photo_file = File.createTempFile("photo.jpg", ".jpg", directoryStorage)
+            val providerFile = FileProvider.getUriForFile(Objects.requireNonNull(this),  BuildConfig.APPLICATION_ID + ".fileprovider", photo_file)
             takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, providerFile)
             startActivityForResult(takePhotoIntent, 13)
         }
         dialog.show()
 
-    }
-
-    private fun getPhotoFile(fileName: String): File {
-        val directoryStorage = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        return File.createTempFile(fileName, ".jpg", directoryStorage)
     }
 
     private fun addProductToDatabase(model:ProductModel){
@@ -204,13 +197,13 @@ class StokActivity : AppCompatActivity() {
     private fun getImages(){
 
         val storage = Firebase.storage
-        val storage_ref = storage.reference
+        val storageRef = storage.reference
         image_to_download = stok_list.size
 
         for (model in stok_list){
             val file = File(filesDir.absolutePath, model.product_image.toString())
             if (!file.exists()){
-                val pathReference = storage_ref.child(model.product_category.toString() + "/" + model.product_image.toString())
+                val pathReference = storageRef.child(model.product_category.toString() + "/" + model.product_image.toString())
                 val b = file.createNewFile()
                 if(b){
                     pathReference.getFile(file).addOnSuccessListener {

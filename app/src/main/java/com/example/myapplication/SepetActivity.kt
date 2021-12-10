@@ -34,10 +34,10 @@ class SepetActivity : AppCompatActivity() {
 
         binding.PayButton.setOnClickListener {
             val db = Firebase.firestore
-            val product_category = Sepet.liste[0].product_category
-            val product_document_id = Sepet.liste[0].document_id
-            val document = db.collection("Products").document(product_category!!).collection("Ürünler").document(
-                product_document_id!!)
+            val productCategory = Sepet.liste[0].product_category
+            val productDocumentId = Sepet.liste[0].document_id
+            val document = db.collection("Products").document(productCategory!!).collection("Ürünler").document(
+                productDocumentId!!)
 
             document.get()
                 .addOnSuccessListener { result->
