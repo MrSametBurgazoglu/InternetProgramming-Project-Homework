@@ -119,9 +119,12 @@ class StokActivity : AppCompatActivity() {
                     model.document_id = document.id
                     stok_list.add(model)
                 }
-                stok_list.sortedBy { it.document_id }
-                binding.recyclerView.adapter?.notifyDataSetChanged()
-                getImages()
+                categories_to_download -= 1
+                if(categories_to_download == 0){
+                    stok_list.sortBy { it.document_id }
+                    binding.recyclerView.adapter?.notifyDataSetChanged()
+                    getImages()
+                }
             }
             .addOnFailureListener { exception ->
                 Log.w("Info", "Error getting documents.", exception)
