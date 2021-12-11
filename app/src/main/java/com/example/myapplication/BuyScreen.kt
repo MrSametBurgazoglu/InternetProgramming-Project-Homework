@@ -38,7 +38,7 @@ class BuyScreen : AppCompatActivity() {
             else{
                 val intent = Intent(this, SepetActivity::class.java)
                 Sepet.clearList()
-                val productModel = ProductModel(productDocumentID, productImage, productName, productCategory, productPrice.toInt(), count)
+                val productModel = ProductModel(productDocumentID, productImage, productName, productCategory, productPrice.toDouble(), count)
                 Sepet.addToList(productModel)
                 startActivity(intent)
             }

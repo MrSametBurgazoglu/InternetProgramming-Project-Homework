@@ -75,11 +75,11 @@ class StokActivity : AppCompatActivity() {
             val productCountEdittext = view?.itemView?.findViewById<EditText>(R.id.ProductCount)
             val productPriceEdittext = view?.itemView?.findViewById<EditText>(R.id.ProductPrice)
             if (productCountEdittext != null && productPriceEdittext != null) {
-                if (productCountEdittext.text.toString().toInt() != stok_list[child_count].product_count || productPriceEdittext.text.toString().toInt() != stok_list[child_count].product_price){
+                if (productCountEdittext.text.toString().toInt() != stok_list[child_count].product_count || productPriceEdittext.text.toString().toDouble() != stok_list[child_count].product_price){
                     val document = db.collection("Products").document(stok_list[child_count].product_category!!).collection("Ürünler").document(
                         stok_list[child_count].document_id!!)
-                    document.update("product_price", productPriceEdittext.text.toString().toInt())
-                    document.update("product_count", productCountEdittext.text.toString().toInt())
+                    document.update("product_price", productPriceEdittext.text.toString().toDouble())
+                    document.update("product_count", productCountEdittext.text.toString().toDouble())
                 }
             }
         }
@@ -164,7 +164,7 @@ class StokActivity : AppCompatActivity() {
                 productNameEditText.text.toString() + ".jpg",//product_image
                 productNameEditText.text.toString(),
                 productCategorySpinner.selectedItem.toString(),
-                productPriceEditText.text.toString().toInt(),
+                productPriceEditText.text.toString().toDouble(),
                 productCountEditText.text.toString().toInt(),
             )
             addProductToDatabase(model)

@@ -9,5 +9,5 @@ data class ProductModel (
     var product_image: String? = "",
     var product_name: String? = "",
     var product_category: String? = "",
-    var product_price: Int? = 0,
+    var product_price: Double? = 0.0,
     var product_count: Int? = 0)
