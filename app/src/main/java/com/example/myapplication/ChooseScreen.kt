@@ -54,7 +54,6 @@ class ChooseScreen : AppCompatActivity() {
         collection.document(category).collection("Ürünler")
             .get()
             .addOnSuccessListener { result ->
-                Toast.makeText(this, "Success", Toast.LENGTH_LONG).show()
                 for (document in result) {
                     Log.d("Info", "${document.id} => ${document.data}")
                     val model = document.toObject<ProductModel>()
