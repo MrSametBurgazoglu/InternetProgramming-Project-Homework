@@ -31,6 +31,7 @@ private var stok_list = mutableListOf<ProductModel>()
 private lateinit var dialog: Dialog
 private lateinit var photo_file: File
 private var image_to_download = 0
+private var categories_to_download = 0
 
 class StokActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -98,29 +99,37 @@ class StokActivity : AppCompatActivity() {
             }
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     private fun getAllProducts(categories: ArrayList<String>){
+        categories_to_download = categories.size
+        for (category in categories) {
+            get_products_by_category(category)
+        }
+    }
 
+    @SuppressLint("NotifyDataSetChanged")
+    private fun get_products_by_category(category:String){
         val db = Firebase.firestore
         val collection = db.collection("Products")
-        for (category in categories) {
-            collection.document(category).collection("Ürünler")
-                .get()
-                .addOnSuccessListener { result ->
-                    for (document in result) {
-                        Log.d("Info", "${document.id} => ${document.data}")
-                        val model = document.toObject<ProductModel>()
-                        model.document_id = document.id
-                        stok_list.add(model)
-                    }
+        collection.document(category).collection("Ürünler")
+            .get()
+            .addOnSuccessListener { result ->
+                for (document in result) {
+                    Log.d("Info", "${document.id} => ${document.data}")
+                    val model = document.toObject<ProductModel>()
+                    model.document_id = document.id
+                    stok_list.add(model)
+                }
+                categories_to_download -= 1
+                if(categories_to_download == 0){
+                    stok_list.sortedBy { it.document_id }
                     binding.recyclerView.adapter?.notifyDataSetChanged()
                     getImages()
                 }
-                .addOnFailureListener { exception ->
-                    Log.w("Info", "Error getting documents.", exception)
-                    Toast.makeText(this, "Failed", Toast.LENGTH_LONG).show()
-                }
-        }
+            }
+            .addOnFailureListener { exception ->
+                Log.w("Info", "Error getting documents.", exception)
+                Toast.makeText(this, "Failed", Toast.LENGTH_LONG).show()
+            }
     }
 
     private fun showAddDialog() {
