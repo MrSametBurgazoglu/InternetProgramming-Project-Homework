@@ -102,12 +102,12 @@ class StokActivity : AppCompatActivity() {
     private fun getAllProducts(categories: ArrayList<String>){
         categories_to_download = categories.size
         for (category in categories) {
-            get_products_by_category(category)
+            getProductsByCategory(category)
         }
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private fun get_products_by_category(category:String){
+    private fun getProductsByCategory(category:String){
         val db = Firebase.firestore
         val collection = db.collection("Products")
         collection.document(category).collection("Ürünler")
@@ -119,12 +119,9 @@ class StokActivity : AppCompatActivity() {
                     model.document_id = document.id
                     stok_list.add(model)
                 }
-                categories_to_download -= 1
-                if(categories_to_download == 0){
-                    stok_list.sortedBy { it.document_id }
-                    binding.recyclerView.adapter?.notifyDataSetChanged()
-                    getImages()
-                }
+                stok_list.sortedBy { it.document_id }
+                binding.recyclerView.adapter?.notifyDataSetChanged()
+                getImages()
             }
             .addOnFailureListener { exception ->
                 Log.w("Info", "Error getting documents.", exception)
