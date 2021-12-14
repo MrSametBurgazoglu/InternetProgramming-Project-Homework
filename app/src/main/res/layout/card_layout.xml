@@ -17,11 +17,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <!--Text View to display Course Name-->
-
-        <!--Text VIew to display COurse Rating-->
-        <!--Image used in present in drawable folder-->
-
         <ImageView
             android:id="@+id/ProductImage"
             android:layout_width="64dp"
@@ -40,7 +35,7 @@
             android:layout_marginStart="8dp"
             android:text="@string/product_name"
             android:textColor="@color/black"
-            android:textSize="18sp"
+            android:textSize="11sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -53,7 +48,7 @@
             android:layout_height="wrap_content"
             android:text="@string/product_price"
             android:textColor="@color/black"
-            android:textSize="18sp"
+            android:textSize="11sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@+id/ProductName"
             app:layout_constraintStart_toStartOf="@+id/ProductName"

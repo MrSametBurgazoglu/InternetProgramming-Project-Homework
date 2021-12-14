@@ -159,27 +159,32 @@ class StokActivity : AppCompatActivity() {
 
         addButton.setOnClickListener {
             dialog.dismiss()
-            val model = ProductModel(
-                productNameEditText.text.toString(),
-                productNameEditText.text.toString() + ".jpg",//product_image
-                productNameEditText.text.toString(),
-                productCategorySpinner.selectedItem.toString(),
-                productPriceEditText.text.toString().toDouble(),
-                productCountEditText.text.toString().toInt(),
-            )
-            addProductToDatabase(model)
-            productImageButton.invalidate()
-            val drawable = productImageButton.drawable
-            val bitmap = drawable.toBitmap()
-            val resizedImage = Bitmap.createScaledBitmap(bitmap, 64, 64, false)
-            val baos = ByteArrayOutputStream()
-            resizedImage.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-            val data = baos.toByteArray()
-            val storageRef = Firebase.storage.reference
-            val fileRef = storageRef.child(model.product_category.toString()+"/"+model.product_image.toString())
-            val uploadTask = fileRef.putBytes(data)
-            uploadTask.addOnFailureListener {
-                Toast.makeText(this, "Ürün resmini veritabanına göndermede sorun yaşandı", Toast.LENGTH_SHORT).show()
+            if(productNameEditText.text.toString().isBlank() || productPriceEditText.text.toString().isBlank() || productCountEditText.text.toString().isBlank()){
+                Toast.makeText(this, "Girilen veriler hatalı", Toast.LENGTH_LONG).show()
+            }
+            else{
+                val model = ProductModel(
+                    productNameEditText.text.toString(),
+                    productNameEditText.text.toString() + ".jpg",//product_image
+                    productNameEditText.text.toString(),
+                    productCategorySpinner.selectedItem.toString(),
+                    productPriceEditText.text.toString().toDouble(),
+                    productCountEditText.text.toString().toInt(),
+                )
+                addProductToDatabase(model)
+                productImageButton.invalidate()
+                val drawable = productImageButton.drawable
+                val bitmap = drawable.toBitmap()
+                val resizedImage = Bitmap.createScaledBitmap(bitmap, 64, 64, false)
+                val baos = ByteArrayOutputStream()
+                resizedImage.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+                val data = baos.toByteArray()
+                val storageRef = Firebase.storage.reference
+                val fileRef = storageRef.child(model.product_category.toString()+"/"+model.product_image.toString())
+                val uploadTask = fileRef.putBytes(data)
+                uploadTask.addOnFailureListener {
+                    Toast.makeText(this, "Ürün resmini veritabanına göndermede sorun yaşandı", Toast.LENGTH_SHORT).show()
+                }
             }
         }
         noButton.setOnClickListener { dialog.dismiss() }
