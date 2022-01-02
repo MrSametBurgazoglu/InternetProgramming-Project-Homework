@@ -41,6 +41,7 @@
     <string name="product_price_edittext">Ürünün Fiyatı</string>
     <string name="product_count_edittext">Ürünün Adedi</string>
     <string name="urun_ekle">Ürün Ekle</string>
+    <string name="sepet">SEPET</string>
     <string-array name="categories_array">
         <item>Atıştırmalık</item>
         <item>Ekmek ve Pasta</item>
@@ -49,5 +50,20 @@
         <item>Temizlik ve Bakım</item>
         <item>İçecekler</item>
     </string-array>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="ad_soyad">Ad Soyad</string>
+    <string name="email">Email</string>
+    <string name="sifre">Şifre</string>
+    <string name="giris_yap">Giriş Yap</string>
+    <string name="uye_ol">Üye ol</string>
+    <string name="sepet_butonu">sepet butonu</string>
 
 </resources>

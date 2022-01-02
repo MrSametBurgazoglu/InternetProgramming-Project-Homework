@@ -5,13 +5,16 @@ import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.databinding.ActivitySepetBinding
 import java.io.File
 
 
-class SepetContentAdapter(private val courseModelArrayList: MutableList<ProductModel>, private val context: Context) :
+class SepetContentAdapter(private val courseModelArrayList: MutableList<ProductModel>, private val context: Context, private val  binding:ActivitySepetBinding) :
     RecyclerView.Adapter<SepetContentAdapter.Viewholder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Viewholder {
         val view: View =
@@ -23,12 +26,27 @@ class SepetContentAdapter(private val courseModelArrayList: MutableList<ProductM
         val model = courseModelArrayList[position]
         holder.productName.text = model.product_name
         holder.productPrice.text = context.getString(R.string.product_price_string, model.product_price.toString())
-        holder.productCount.text = context.getString(R.string.product_count_string, model.product_count.toString())
+        holder.productCount.text = model.product_count.toString()
         val file = File(context.filesDir.absolutePath ,model.product_image.toString())
         if (file.exists()){
             val bmImg = BitmapFactory.decodeFile(file.absolutePath)
             holder.productImage.setImageBitmap(bmImg)
         }
+        holder.productDelete.setOnClickListener {
+            courseModelArrayList.removeAt(position)
+            notifyItemRemoved(position)
+            Sepet.removeFromList(model)
+            binding.totalPrice.text = Sepet.total_price.toString()
+        }
+
+        holder.productCount.doAfterTextChanged {
+            val count = holder.productCount.text.toString().toIntOrNull()
+            if (count != null){
+                Sepet.changeCountForProduct(model, count)
+                binding.totalPrice.text = Sepet.total_price.toString()
+            }
+        }
+
     }
 
     override fun getItemCount(): Int {
@@ -39,6 +57,7 @@ class SepetContentAdapter(private val courseModelArrayList: MutableList<ProductM
         val productName: TextView = itemView.findViewById(R.id.ProductName)
         val productPrice: TextView = itemView.findViewById(R.id.ProductPrice)
         val productCount: TextView = itemView.findViewById(R.id.ProductCount)
+        val productDelete: ImageButton = itemView.findViewById(R.id.ProductDelete)
     }
 
 }

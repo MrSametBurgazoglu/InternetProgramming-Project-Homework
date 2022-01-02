@@ -54,12 +54,27 @@ class StokActivity : AppCompatActivity() {
         binding.AddProductButton.setOnClickListener {
             showAddDialog()
         }
+
+        /*
+                        val docRef = db.collection("Users").document(user.uid)
+                        docRef.get()
+                            .addOnSuccessListener { document ->
+                                if (document != null) {
+                                    Log.d(TAG, "DocumentSnapshot data: ${document.data}")
+                                } else {
+                                    Log.d(TAG, "No such document")
+                                }
+                            }
+                            .addOnFailureListener { exception ->
+                                Log.d(TAG, "get failed with ", exception)
+                            }
+                         */
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if(requestCode == 13 && resultCode == Activity.RESULT_OK){
             val takenPhoto = BitmapFactory.decodeFile(photo_file.absolutePath)
-            //val b = BitmapFactory.decodeByteArray(takenPhoto, 0, takenPhoto.length)
             val resizedImage = Bitmap.createScaledBitmap(takenPhoto, 128, 128, false)
             val productImageButton = dialog.findViewById(R.id.ProductImageButton) as ImageButton
             productImageButton.setImageBitmap(resizedImage)

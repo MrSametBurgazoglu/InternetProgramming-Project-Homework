@@ -19,7 +19,7 @@ class SepetActivity : AppCompatActivity() {
         binding = ActivitySepetBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        binding.recyclerView.adapter = SepetContentAdapter(Sepet.liste, context = this)
+        binding.recyclerView.adapter = SepetContentAdapter(Sepet.liste, context = this, binding)
         binding.totalPrice.text = getString(R.string.total_price_string, Sepet.total_price.toString())
 
         binding.stokButton.setOnClickListener {

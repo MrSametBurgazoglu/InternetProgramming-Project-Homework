@@ -44,6 +44,12 @@ class ChooseScreen : AppCompatActivity() {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
+
+        binding.sepetButton.setOnClickListener {
+            val intent = Intent(this, SepetActivity::class.java)
+            startActivity(intent)
+        }
+
     }
 
     @SuppressLint("NotifyDataSetChanged")

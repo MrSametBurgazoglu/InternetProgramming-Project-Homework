@@ -146,4 +146,14 @@
         app:layout_constraintStart_toStartOf="@+id/chocolateButton"
         app:layout_constraintTop_toBottomOf="@+id/chocolateButton" />
 
+    <Button
+        android:id="@+id/sepetButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sepet"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintEnd_toStartOf="@+id/textView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

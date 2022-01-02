@@ -36,10 +36,14 @@ class BuyScreen : AppCompatActivity() {
                 Toast.makeText(this, "Üzgünüz, istediğiniz üründen kalmadı..",Toast.LENGTH_LONG).show()
             }
             else{
-                val intent = Intent(this, SepetActivity::class.java)
-                Sepet.clearList()
                 val productModel = ProductModel(productDocumentID, productImage, productName, productCategory, productPrice.toDouble(), count)
-                Sepet.addToList(productModel)
+                if (!Sepet.is_in_list(productModel)){
+                    Sepet.addToList(productModel)
+                }
+                else{
+                    Toast.makeText(this, "Bu ürünü zaten sepete eklediniz", Toast.LENGTH_LONG).show()
+                }
+                val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
             }
         }
@@ -67,5 +71,11 @@ class BuyScreen : AppCompatActivity() {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
+
+        binding.sepetButton.setOnClickListener {
+            val intent = Intent(this, SepetActivity::class.java)
+            startActivity(intent)
+        }
+
     }
 }

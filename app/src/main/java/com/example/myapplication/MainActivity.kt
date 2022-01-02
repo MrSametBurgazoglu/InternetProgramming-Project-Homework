@@ -59,6 +59,11 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, StokActivity::class.java)
             startActivity(intent)
         }
+
+        binding.sepetButton.setOnClickListener {
+            val intent = Intent(this, SepetActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun checkPermission() {
