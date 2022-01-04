@@ -33,7 +33,7 @@ class SepetActivity : AppCompatActivity() {
 
         binding.recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.recyclerView.adapter = SepetContentAdapter(Sepet.liste, context = this, binding)
-        binding.totalPrice.text = getString(R.string.total_price_string, Sepet.total_price.toString())
+        binding.totalPrice.text = getString(R.string.total_price_string, "%2.f".format(Sepet.total_price))
 
         binding.stokButton.setOnClickListener {
             val intent = Intent(this, StokActivity::class.java)
