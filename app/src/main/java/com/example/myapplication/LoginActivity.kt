@@ -25,7 +25,12 @@ class LoginActivity : AppCompatActivity() {
         binding.SigninButton.setOnClickListener {
             val email = binding.editTextEmail.text.toString()
             val password = binding.editTextPassword.text.toString()
-            signIn(email, password)
+            if(email.isNotBlank() && password.isNotBlank()){
+                signIn(email, password)
+            }
+            else{
+                Toast.makeText(this, "Hatalı bilgi girdiniz", Toast.LENGTH_LONG).show()
+            }
         }
 
         binding.SignupButton.setOnClickListener {

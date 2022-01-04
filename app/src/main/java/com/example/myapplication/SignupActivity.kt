@@ -34,8 +34,15 @@ class SignupActivity : AppCompatActivity() {
             val password = binding.editTextPassword.text.toString()
             val name = binding.editTextName.text.toString()
             val authority = binding.checkBox2.isChecked
+            val authority2 = binding.checkBox.isChecked
 
-            checkEmailExistsOrNot(email, password, name, authority)
+            if(email.isNotBlank() && password.isNotBlank() && name.isNotBlank() && (authority || !authority2)){
+                checkEmailExistsOrNot(email, password, name, authority)
+            }
+            else{
+                Toast.makeText(this, "Hatalı bilgi girdiniz", Toast.LENGTH_SHORT).show()
+            }
+
         }
 
         binding.checkBox.setOnClickListener {
