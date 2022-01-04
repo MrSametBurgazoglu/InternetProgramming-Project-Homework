@@ -18,6 +18,8 @@ import androidx.core.content.FileProvider
 import androidx.core.graphics.drawable.toBitmap
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.databinding.ActivityStokBinding
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
@@ -34,6 +36,8 @@ private lateinit var photo_file: File
 private lateinit var userid:String
 private var image_to_download = 0
 private var categories_to_download = 0
+private lateinit var auth: FirebaseAuth
+
 
 
 class StokActivity : AppCompatActivity() {
@@ -41,6 +45,15 @@ class StokActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityStokBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        auth = Firebase.auth
+
+        if (auth.currentUser == null){
+            showLoginDialog()
+        }
+        Toast.makeText(this, auth.currentUser.toString(), Toast.LENGTH_SHORT).show()
+
+
         binding.recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         stok_list.clear()
         getCategories()
@@ -61,20 +74,6 @@ class StokActivity : AppCompatActivity() {
             showAddDialog()
         }
 
-        /*
-                        val docRef = db.collection("Users").document(user.uid)
-                        docRef.get()
-                            .addOnSuccessListener { document ->
-                                if (document != null) {
-                                    Log.d(TAG, "DocumentSnapshot data: ${document.data}")
-                                } else {
-                                    Log.d(TAG, "No such document")
-                                }
-                            }
-                            .addOnFailureListener { exception ->
-                                Log.d(TAG, "get failed with ", exception)
-                            }
-                         */
 
     }
 
@@ -155,36 +154,52 @@ class StokActivity : AppCompatActivity() {
 
 
     private fun setVisibility(){
-        val db = Firebase.firestore
-        val document = db.collection("Users").document(userid)
+        if(auth.currentUser == null){
+            binding.saveButton.visibility = View.INVISIBLE
+            binding.AddProductButton.visibility = View.INVISIBLE
+            for(child_count in 0..stok_list.size){
+                val view = binding.recyclerView.findViewHolderForAdapterPosition(child_count)
+                val productCountEdittext = view?.itemView?.findViewById<EditText>(R.id.ProductCount)
+                val productPriceEdittext = view?.itemView?.findViewById<EditText>(R.id.ProductPrice)
+                if (productCountEdittext != null && productPriceEdittext != null) {
+                    productCountEdittext.isEnabled = false
+                    productPriceEdittext.isEnabled = false
+                }
+            }
+        }
+        else{
+            val db = Firebase.firestore
+            userid = auth.currentUser!!.uid
+            val document = db.collection("Users").document(userid)
 
-        document.get()
-            .addOnSuccessListener { result->
-                val model = result.toObject<User>()
-                if (model != null) {
-                    Toast.makeText(this, model.stuff.toString(), Toast.LENGTH_SHORT).show()
-                    if (!model.stuff){
-                        binding.saveButton.visibility = View.INVISIBLE
-                        binding.AddProductButton.visibility = View.INVISIBLE
-                        for(child_count in 0..stok_list.size){
-                            val view = binding.recyclerView.findViewHolderForAdapterPosition(child_count)
-                            val productCountEdittext = view?.itemView?.findViewById<EditText>(R.id.ProductCount)
-                            val productPriceEdittext = view?.itemView?.findViewById<EditText>(R.id.ProductPrice)
-                            if (productCountEdittext != null && productPriceEdittext != null) {
-                                productCountEdittext.isEnabled = false
-                                productPriceEdittext.isEnabled = false
+            document.get()
+                .addOnSuccessListener { result->
+                    val model = result.toObject<User>()
+                    if (model != null) {
+                        if (!model.stuff){
+                            binding.saveButton.visibility = View.INVISIBLE
+                            binding.AddProductButton.visibility = View.INVISIBLE
+                            for(child_count in 0..stok_list.size){
+                                val view = binding.recyclerView.findViewHolderForAdapterPosition(child_count)
+                                val productCountEdittext = view?.itemView?.findViewById<EditText>(R.id.ProductCount)
+                                val productPriceEdittext = view?.itemView?.findViewById<EditText>(R.id.ProductPrice)
+                                if (productCountEdittext != null && productPriceEdittext != null) {
+                                    productCountEdittext.isEnabled = false
+                                    productPriceEdittext.isEnabled = false
+                                }
                             }
                         }
                     }
+                    else{
+                        Toast.makeText(this, "Kullanıcı bulunamadı", Toast.LENGTH_SHORT).show()
+                    }
                 }
-                else{
-                    Toast.makeText(this, "Ürün bulunamadı", Toast.LENGTH_SHORT).show()
+                .addOnFailureListener { exception ->
+                    Log.w("Info", "Error getting documents.", exception)
+                    Toast.makeText(this, exception.toString(), Toast.LENGTH_LONG).show()
                 }
-            }
-            .addOnFailureListener { exception ->
-                Log.w("Info", "Error getting documents.", exception)
-                Toast.makeText(this, exception.toString(), Toast.LENGTH_LONG).show()
-            }
+        }
+
     }
 
 
@@ -255,6 +270,148 @@ class StokActivity : AppCompatActivity() {
         dialog.show()
 
     }
+
+
+    private fun showLoginDialog() {
+        dialog = Dialog(this)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(false)
+        dialog.setContentView(R.layout.activity_login)
+
+        val signinButton = dialog.findViewById(R.id.SigninButton) as Button
+        val signupButton = dialog.findViewById(R.id.SignupButton) as Button
+        val editTextEmail = dialog.findViewById(R.id.editTextEmail) as EditText
+        val editTextPassword = dialog.findViewById(R.id.editTextPassword) as EditText
+
+        signinButton.setOnClickListener {
+            val email = editTextEmail.text.toString()
+            val password = editTextPassword.text.toString()
+            if(email.isNotBlank() && password.isNotBlank()){
+                signIn(email, password)
+            }
+            else{
+                Toast.makeText(this, "Hatalı bilgi girdiniz", Toast.LENGTH_LONG).show()
+            }
+        }
+
+        signupButton.setOnClickListener {
+            dialog.dismiss()
+            showSignupDialog()
+        }
+        dialog.show()
+
+    }
+
+    private fun signIn(email:String, password:String){
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d("hi", "signInWithEmail:success")
+                    //val user = auth.currentUser
+                    dialog.dismiss()
+                    setVisibility()
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.w("hi", "signInWithEmail:failure", task.exception)
+                    Toast.makeText(baseContext, "Authentication failed.",
+                        Toast.LENGTH_SHORT).show()
+                }
+            }
+    }
+
+    private fun showSignupDialog() {
+        dialog = Dialog(this)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        //dialog.setCancelable(false)
+        dialog.setContentView(R.layout.activity_signup)
+
+
+        val signupButton = dialog.findViewById(R.id.SignupButton) as Button
+        val editTextEmail = dialog.findViewById(R.id.editTextEmail) as EditText
+        val editTextPassword = dialog.findViewById(R.id.editTextPassword) as EditText
+        val editTextName = dialog.findViewById(R.id.editTextName) as EditText
+        val checkBox = dialog.findViewById(R.id.checkBox) as CheckBox
+        val checkBox2 = dialog.findViewById(R.id.checkBox2) as CheckBox
+
+
+        signupButton.setOnClickListener {
+            val email = editTextEmail.text.toString()
+            val password = editTextPassword.text.toString()
+            val name = editTextName.text.toString()
+            val authority = checkBox2.isChecked
+            val authority2 = checkBox.isChecked
+
+            if(email.isNotBlank() && password.isNotBlank() && name.isNotBlank() && ((authority && !authority2) || (!authority && authority2))){
+                checkEmailExistsOrNot(email, password, name, authority)
+            }
+            else{
+                Toast.makeText(this, (authority || !authority2).toString(), Toast.LENGTH_SHORT).show()
+            }
+            dialog.dismiss()
+
+        }
+
+        checkBox.setOnClickListener {
+            checkBox2.isChecked = false
+        }
+
+        checkBox2.setOnClickListener{
+            checkBox.isChecked = false
+        }
+
+        dialog.show()
+
+    }
+
+
+    fun checkEmailExistsOrNot(email: String, password: String, name: String, stuff: Boolean) {
+
+        auth
+            .fetchSignInMethodsForEmail(email)
+            .addOnCompleteListener { task ->
+
+                if (task.result?.signInMethods?.size ?: 0 == 0) {
+                    // email not existed
+                    signup(email, password, name, stuff)
+                } else {
+                    // email existed
+                    Toast.makeText(this, "Zaten üyesiniz giriş yapınız", Toast.LENGTH_LONG).show()
+
+                }
+            }.addOnFailureListener {
+                    e -> e.printStackTrace()
+            }
+
+    }
+
+    fun signup(email:String, password:String, name:String, stuff:Boolean){
+        auth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d("TAG", "createUserWithEmail:success")
+                    val user = auth.currentUser
+                    if (user != null){
+                        val db = Firebase.firestore
+                        val users = db.collection("Users")
+                        val userObject = User(name, email, stuff)
+                        users.document(user.uid).set(userObject)
+                    }
+
+                    auth.signOut()
+                    showLoginDialog()
+
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.w("TAG", "createUserWithEmail:failure", task.exception)
+                    Toast.makeText(this, "Hatalı bilgi girdiniz",
+                        Toast.LENGTH_SHORT).show()
+                }
+            }
+    }
+
+
 
     private fun addProductToDatabase(model:ProductModel){
         val db = Firebase.firestore

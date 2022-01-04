@@ -30,16 +30,8 @@ class SepetActivity : AppCompatActivity() {
         binding.totalPrice.text = getString(R.string.total_price_string, Sepet.total_price.toString())
 
         binding.stokButton.setOnClickListener {
-            if(auth.currentUser == null){
-                val intent = Intent(this, LoginActivity::class.java)
-                startActivity(intent)
-            }
-            else{
-                val intent = Intent(this, StokActivity::class.java).apply {
-                    putExtra("userid", auth.currentUser!!.uid)
-                }
-                startActivity(intent)
-            }
+            val intent = Intent(this, StokActivity::class.java)
+            startActivity(intent)
         }
 
         binding.homeButton.setOnClickListener {
@@ -48,35 +40,43 @@ class SepetActivity : AppCompatActivity() {
         }
 
         binding.PayButton.setOnClickListener {
-            val db = Firebase.firestore
-            payed_count = Sepet.liste.size
-            for (productModel in Sepet.liste){
-                val productCategory = productModel.product_category
-                val productDocumentId = productModel.document_id
-                val document = db.collection("Products").document(productCategory!!).collection("Ürünler").document(
-                    productDocumentId!!)
+            if(auth.currentUser != null){
+                val db = Firebase.firestore
+                payed_count = Sepet.liste.size
+                for (productModel in Sepet.liste){
+                    val productCategory = productModel.product_category
+                    val productDocumentId = productModel.document_id
+                    val document = db.collection("Products").document(productCategory!!).collection("Ürünler").document(
+                        productDocumentId!!)
 
-                document.get()
-                    .addOnSuccessListener { result->
-                        val model = result.toObject<ProductModel>()
-                        if (model != null) {
-                            document.update("product_count",
-                                model.product_count?.minus(Sepet.liste[0].product_count!!)
-                            )
-                            payed_count -= 1
-                            if (payed_count == 0){
-                                val intent = Intent(this, MainActivity::class.java)
-                                startActivity(intent)
+                    document.get()
+                        .addOnSuccessListener { result->
+                            val model = result.toObject<ProductModel>()
+                            if (model != null) {
+                                document.update("product_count",
+                                    model.product_count?.minus(Sepet.liste[0].product_count!!)
+                                )
+                                payed_count -= 1
+                                if (payed_count == 0){
+                                    Sepet.clearList()
+                                    Sepet.total_price = 0.0
+                                    val intent = Intent(this, MainActivity::class.java)
+                                    startActivity(intent)
+                                }
+                            }
+                            else{
+                                Toast.makeText(this, "Ürün bulunamadı", Toast.LENGTH_SHORT).show()
                             }
                         }
-                        else{
-                            Toast.makeText(this, "Ürün bulunamadı", Toast.LENGTH_SHORT).show()
+                        .addOnFailureListener { exception ->
+                            Log.w("Info", "Error getting documents.", exception)
+                            Toast.makeText(this, exception.toString(), Toast.LENGTH_LONG).show()
                         }
-                    }
-                    .addOnFailureListener { exception ->
-                        Log.w("Info", "Error getting documents.", exception)
-                        Toast.makeText(this, exception.toString(), Toast.LENGTH_LONG).show()
-                    }
+                }
+            }
+            else{
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
             }
         }
 

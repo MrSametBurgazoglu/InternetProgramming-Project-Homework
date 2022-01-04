@@ -38,16 +38,8 @@ class ChooseScreen : AppCompatActivity() {
         }
 
         binding.stokButton.setOnClickListener {
-            if(auth.currentUser == null){
-                val intent = Intent(this, LoginActivity::class.java)
-                startActivity(intent)
-            }
-            else{
-                val intent = Intent(this, StokActivity::class.java).apply {
-                    putExtra("userid", auth.currentUser!!.uid)
-                }
-                startActivity(intent)
-            }
+            val intent = Intent(this, StokActivity::class.java)
+            startActivity(intent)
         }
 
         binding.homeButton.setOnClickListener {
