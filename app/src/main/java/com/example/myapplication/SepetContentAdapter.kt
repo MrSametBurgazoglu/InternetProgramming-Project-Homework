@@ -36,14 +36,14 @@ class SepetContentAdapter(private val courseModelArrayList: MutableList<ProductM
             courseModelArrayList.removeAt(position)
             notifyItemRemoved(position)
             Sepet.removeFromList(model)
-            binding.totalPrice.text = "%2.f".format(Sepet.total_price)
+            binding.totalPrice.text = "%.2f".format(Sepet.total_price)
         }
 
         holder.productCount.doAfterTextChanged {
             val count = holder.productCount.text.toString().toIntOrNull()
             if (count != null){
                 Sepet.changeCountForProduct(model, count)
-                binding.totalPrice.text = "%2.f".format(Sepet.total_price)
+                binding.totalPrice.text = "%.2f".format(Sepet.total_price)
             }
         }
 

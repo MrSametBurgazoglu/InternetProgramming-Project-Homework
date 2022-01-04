@@ -20,7 +20,7 @@
     <string name="product_name_string">Ürün Adı: %s</string>
     <string name="product_price_string">Fiyat: %s TL</string>
     <string name="product_count_string">Adet: %s Adet</string>
-    <string name="total_price_string">Toplam Tutar: %s</string>
+    <string name="total_price_string">Toplam Tutar: %2.f</string>
     <string name="zero">0</string>
     <string name="home_button">Ev Butonu</string>
     <string name="save_button">Kaydet</string>
