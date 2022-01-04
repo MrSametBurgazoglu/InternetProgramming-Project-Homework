@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
+import android.view.View
 import android.view.Window
 import android.widget.*
 import androidx.core.content.FileProvider
@@ -30,8 +31,10 @@ private lateinit var binding: ActivityStokBinding
 private var stok_list = mutableListOf<ProductModel>()
 private lateinit var dialog: Dialog
 private lateinit var photo_file: File
+private lateinit var userid:String
 private var image_to_download = 0
 private var categories_to_download = 0
+
 
 class StokActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,6 +45,9 @@ class StokActivity : AppCompatActivity() {
         stok_list.clear()
         getCategories()
         binding.recyclerView.adapter = StokContentAdapter(stok_list, context = this)
+
+        userid = intent.getStringExtra("userid").toString()
+
         binding.homeButton.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
@@ -147,6 +153,41 @@ class StokActivity : AppCompatActivity() {
             }
     }
 
+
+    private fun setVisibility(){
+        val db = Firebase.firestore
+        val document = db.collection("Users").document(userid)
+
+        document.get()
+            .addOnSuccessListener { result->
+                val model = result.toObject<User>()
+                if (model != null) {
+                    Toast.makeText(this, model.stuff.toString(), Toast.LENGTH_SHORT).show()
+                    if (!model.stuff){
+                        binding.saveButton.visibility = View.INVISIBLE
+                        binding.AddProductButton.visibility = View.INVISIBLE
+                        for(child_count in 0..stok_list.size){
+                            val view = binding.recyclerView.findViewHolderForAdapterPosition(child_count)
+                            val productCountEdittext = view?.itemView?.findViewById<EditText>(R.id.ProductCount)
+                            val productPriceEdittext = view?.itemView?.findViewById<EditText>(R.id.ProductPrice)
+                            if (productCountEdittext != null && productPriceEdittext != null) {
+                                productCountEdittext.isEnabled = false
+                                productPriceEdittext.isEnabled = false
+                            }
+                        }
+                    }
+                }
+                else{
+                    Toast.makeText(this, "Ürün bulunamadı", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.w("Info", "Error getting documents.", exception)
+                Toast.makeText(this, exception.toString(), Toast.LENGTH_LONG).show()
+            }
+    }
+
+
     private fun showAddDialog() {
         dialog = Dialog(this)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -250,6 +291,7 @@ class StokActivity : AppCompatActivity() {
             }
             if (image_to_download == 0){
                 binding.recyclerView.adapter?.notifyDataSetChanged()
+                setVisibility()
             }
         }
 

@@ -4,7 +4,10 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.EditText
 import android.widget.Toast
+import com.example.myapplication.databinding.ActivityMainBinding
 
 import com.example.myapplication.databinding.ActivitySignupBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -21,6 +24,7 @@ private lateinit var auth: FirebaseAuth
 class SignupActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = ActivitySignupBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         auth = Firebase.auth
@@ -29,11 +33,43 @@ class SignupActivity : AppCompatActivity() {
             val email = binding.editTextEmail.text.toString()
             val password = binding.editTextPassword.text.toString()
             val name = binding.editTextName.text.toString()
-            signup(email, password, name)
+            val authority = binding.checkBox2.isChecked
+
+            checkEmailExistsOrNot(email, password, name, authority)
         }
+
+        binding.checkBox.setOnClickListener {
+            binding.checkBox2.isChecked = false
+        }
+
+        binding.checkBox2.setOnClickListener{
+            binding.checkBox.isChecked = false
+        }
+
     }
 
-    fun signup(email:String, password:String, name:String){
+
+    fun checkEmailExistsOrNot(email: String, password: String, name: String, stuff: Boolean) {
+
+        auth
+            .fetchSignInMethodsForEmail(email)
+            .addOnCompleteListener { task ->
+
+                if (task.result?.signInMethods?.size ?: 0 == 0) {
+                    // email not existed
+                    signup(email, password, name, stuff)
+                } else {
+                    // email existed
+                    Toast.makeText(this, "Zaten üyesiniz giriş yapınız", Toast.LENGTH_LONG).show()
+
+                }
+            }.addOnFailureListener {
+                    e -> e.printStackTrace()
+            }
+
+    }
+
+    fun signup(email:String, password:String, name:String, stuff:Boolean){
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
@@ -43,7 +79,7 @@ class SignupActivity : AppCompatActivity() {
                     if (user != null){
                         val db = Firebase.firestore
                         val users = db.collection("Users")
-                        val userObject = User(name, email, false)
+                        val userObject = User(name, email, stuff)
                         users.document(user.uid).set(userObject)
                     }
 
@@ -52,7 +88,7 @@ class SignupActivity : AppCompatActivity() {
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w("TAG", "createUserWithEmail:failure", task.exception)
-                    Toast.makeText(baseContext, "Authentication failed.",
+                    Toast.makeText(this, "Hatalı bilgi girdiniz",
                         Toast.LENGTH_SHORT).show()
                 }
             }

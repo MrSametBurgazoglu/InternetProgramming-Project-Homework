@@ -9,12 +9,19 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.myapplication.databinding.ActivityMainBinding
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 private lateinit var binding: ActivityMainBinding
+private lateinit var auth: FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        auth = Firebase.auth
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         checkPermission()
@@ -56,8 +63,16 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
         binding.stokButton.setOnClickListener {
-            val intent = Intent(this, StokActivity::class.java)
-            startActivity(intent)
+            if(auth.currentUser == null){
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+            }
+            else{
+                val intent = Intent(this, StokActivity::class.java).apply {
+                    putExtra("userid", auth.currentUser!!.uid)
+                }
+                startActivity(intent)
+            }
         }
 
         binding.sepetButton.setOnClickListener {

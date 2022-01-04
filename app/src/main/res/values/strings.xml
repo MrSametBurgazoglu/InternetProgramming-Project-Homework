@@ -65,5 +65,8 @@
     <string name="giris_yap">Giriş Yap</string>
     <string name="uye_ol">Üye ol</string>
     <string name="sepet_butonu">sepet butonu</string>
+    <string name="yetkinlik">Yetkinlik</string>
+    <string name="musteri">Müşteri</string>
+    <string name="personel">Personel</string>
 
 </resources>

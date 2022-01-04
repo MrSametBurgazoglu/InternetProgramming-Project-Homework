@@ -13,16 +13,18 @@ import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import java.io.File
-
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 
 private lateinit var binding: ActivityChooseScreenBinding
+private lateinit var auth: FirebaseAuth
 private var model_list = mutableListOf<ProductModel>()
 private var image_to_download = 0
 
 class ChooseScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //setContentView(R.layout.activity_choose_screen)
+        auth = Firebase.auth
         binding = ActivityChooseScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val category = intent.getStringExtra("category")
@@ -36,8 +38,16 @@ class ChooseScreen : AppCompatActivity() {
         }
 
         binding.stokButton.setOnClickListener {
-            val intent = Intent(this, StokActivity::class.java)
-            startActivity(intent)
+            if(auth.currentUser == null){
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+            }
+            else{
+                val intent = Intent(this, StokActivity::class.java).apply {
+                    putExtra("userid", auth.currentUser!!.uid)
+                }
+                startActivity(intent)
+            }
         }
 
         binding.homeButton.setOnClickListener {

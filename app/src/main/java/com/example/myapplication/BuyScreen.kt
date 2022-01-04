@@ -7,15 +7,22 @@ import android.widget.Toast
 import com.example.myapplication.databinding.ActivityBuyScreenBinding
 import android.graphics.BitmapFactory
 import java.io.File
-
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 private lateinit var binding: ActivityBuyScreenBinding
+private lateinit var auth: FirebaseAuth
+
 
 class BuyScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityBuyScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        auth = Firebase.auth
+
         val productImage:String = intent.getStringExtra("product_image").toString()
         val productName:String = intent.getStringExtra("product_name").toString()
         val productCategory:String = intent.getStringExtra("product_category").toString()
@@ -63,8 +70,16 @@ class BuyScreen : AppCompatActivity() {
         }
 
         binding.stokButton.setOnClickListener {
-            val intent = Intent(this, StokActivity::class.java)
-            startActivity(intent)
+            if(auth.currentUser == null){
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+            }
+            else{
+                val intent = Intent(this, StokActivity::class.java).apply {
+                    putExtra("userid", auth.currentUser!!.uid)
+                }
+                startActivity(intent)
+            }
         }
 
         binding.homeButton.setOnClickListener {
