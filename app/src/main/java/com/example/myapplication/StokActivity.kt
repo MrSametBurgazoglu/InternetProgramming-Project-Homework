@@ -189,6 +189,9 @@ class StokActivity : AppCompatActivity() {
                                 }
                             }
                         }
+                        else{
+                            binding.sepetButton.visibility = View.INVISIBLE
+                        }
                     }
                     else{
                         Toast.makeText(this, "Kullanıcı bulunamadı", Toast.LENGTH_SHORT).show()
